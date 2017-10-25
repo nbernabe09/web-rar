@@ -1,0 +1,14 @@
+<div class="row">
+  {{#each article}}
+    <div class="col-md-3">
+      <div class="card">
+        <img class="card-img-top" src="{{img}}">
+        <div class="card-body">
+          <h4 class="card-title">{{headline}}</h4>
+          {{!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> --}}
+          <a href="{{url}}" class="btn btn-primary">Link</a>
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>  
