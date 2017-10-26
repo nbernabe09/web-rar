@@ -68,7 +68,7 @@ app.get("/scrape", function(req, res) {
         .children("a.thumbnail")
         .children("img")
         .attr("src") || "assets/images/none.jpg";
-      if (url.includes("https")) {
+      if (url.includes("http")) {
         result.url = url;
       } else {
         result.url = "https://www.reddit.com" + url;
@@ -89,8 +89,21 @@ app.post("/comment/:id", function(req, res) {
     .then(function(dbComment) {
       return db.Article.findOneAndUpdate({ _id: id }, { $push: { comment: dbComment._id } }, { new: true });
     })
-    .then(function() {
+    .then(function(dbArticle) {
       res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+app.delete("/delete/", function(req, res) {
+  var id = req.body.id;
+
+  db.Comment
+    .remove({ _id: id })
+    .then(function(dbComment) {
+      res.json(dbComment);
     })
     .catch(function(err) {
       res.json(err);
