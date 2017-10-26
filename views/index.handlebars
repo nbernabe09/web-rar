@@ -6,7 +6,23 @@
         <div class="card-body">
           <h4 class="card-title">{{headline}}</h4>
           {{!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> --}}
-          <a href="{{url}}" class="btn btn-primary">Link</a>
+          <a href="{{url}}" class="btn btn-primary btn-block">Link</a>
+          <button class="btn btn-info btn-block" type="button" data-toggle="collapse" data-target="#comment{{_id}}" aria-expanded="false" aria-controls="comment{{_id}}">
+            Comments
+          </button>
+        </div>
+        <div class="collapse" id="comment{{_id}}">
+          <div class="card card-body">
+            {{#each comment}}
+              <p>{{message}}</p>
+            {{/each}}
+            <form>
+              <div class="form-group">
+                <input type="text" class="form-control" id="message" placeholder="Add a comment...">
+              </div>
+              <button type="submit" class="btn btn-success btn-block" id="addComment" value="{{_id}}">Add Comment</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

@@ -27,6 +27,21 @@ mongoose.connect(MONGODB_URI, {
 app.get("/", function(req, res) {
   db.Article
     .find({})
+    .populate("comment")
+    .sort({ createdAt: -1 })
+    .then(function(dbArticle) {
+      res.render("index", {article: dbArticle});
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+app.get("/old", function(req, res) {
+  db.Article
+    .find({})
+    .populate("comment")
+    .sort({ createdAt: 1 })
     .then(function(dbArticle) {
       res.render("index", {article: dbArticle});
     })
@@ -63,6 +78,23 @@ app.get("/scrape", function(req, res) {
     });
     res.redirect("/");
   });
+});
+
+app.post("/comment/:id", function(req, res) {
+  var id = req.params.id;
+  var message = req.body.message;
+  
+  db.Comment
+    .create(req.body)
+    .then(function(dbComment) {
+      return db.Article.findOneAndUpdate({ _id: id }, { $push: { comment: dbComment._id } }, { new: true });
+    })
+    .then(function() {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
 });
 
 app.listen(port, function() {
